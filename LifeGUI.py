@@ -3,6 +3,7 @@ import LabelFrameView as lfv
 import BooleanModel as bm
 from tkinter.filedialog import askopenfilename
 from tkinter.filedialog import asksaveasfilename
+import time
 
 
 """Functions for the widgets in generate_frame and grid_frame"""
@@ -162,6 +163,21 @@ def change_size(size):
     view.reset_cells()
 
 
+def loop():
+    """Recursively loops next_gen"""
+    if run.config('text')[-1] == 'Stop':
+        next_gen()
+        root.after(500, loop)
+
+
+def run_generations():
+    """Handles 'Run' button mechanics"""
+    if run.config('text')[-1] == 'Run':
+        run.config(text='Stop')
+        loop()
+    else:
+        run.config(text='Run')
+
 
 """Creates a tkinter Frame widget which contains options which modify and update the LifeGUI grid."""
 bottom_frame = tk.Frame(root, width=800, height=150, bg="#D3D3D3", padx=75, pady=15)
@@ -170,11 +186,13 @@ clear = tk.Button(bottom_frame, text="Clear", highlightthickness=0, highlightbac
 clear.configure(bg="red")
 next_generation = tk.Button(bottom_frame, text="Next Generation", bg="#D3D3D3", highlightthickness=0,
                             highlightbackground="#D3D3D3", command=next_gen)
+run = tk.Button(bottom_frame, text="Run", bg="#D3D3D3", highlightthickness=0, highlightbackground="#D3D3D3", command=run_generations)
 
 generation = tk.Label(bottom_frame, text="Generation " + str(model.generation), bg="#D3D3D3")
 
 clear.grid(row=0, column=3, padx=(5, 10))
 next_generation.grid(row=0, column=2, padx=(25, 5))
+run.grid(row=0, column=4)
 
 generation.grid(row=0, column=1, padx=(110, 25))
 
@@ -191,27 +209,3 @@ grid_frame.pack()
 bottom_frame.pack(fill=tk.BOTH, expand=True)
 
 root.mainloop()
-
-
-# def run_generations():
-#     root.after(1, run_generations)
-#     model.next_generation()
-#     view.reset_cells()
-
-# def toggle():
-#     if run['text'] == "Run":
-#         run.configure(text="Stop")
-#         root.after(0.5, )
-#
-#         while run['text'] == "Stop":
-#             print("meow")
-#             model.next_generation()
-#             view.reset_cells()
-#
-#     else:
-#         run.configure(text="Run")
-
-# run = tk.Button(bottom_frame, text="Run", bg="#D3D3D3", highlightthickness=0, highlightbackground="#D3D3D3",
-# command=run_generations)
-
-# run.grid(row=0, column=2, padx=10)
