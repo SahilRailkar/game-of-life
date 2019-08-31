@@ -93,6 +93,7 @@ def popup_window(error_num):
 """Initializes the tkinter window."""
 root = tk.Tk()
 root.title("Conway's Game of Life GUI")
+root.minsize(760, 660)
 
 
 """Creates a tkinter Menu widget with various commands."""
@@ -116,11 +117,20 @@ rows_input = tk.Entry(generate_frame, highlightthickness=0, highlightbackground=
 columns_input = tk.Entry(generate_frame, highlightthickness=0, highlightbackground="#D3D3D3")
 generate = tk.Button(generate_frame, text="Generate", highlightthickness=0, highlightbackground="#D3D3D3",
                      command=generate_view)
-rows.pack(side=tk.LEFT, padx=(12, 0))
-rows_input.pack(side=tk.LEFT, padx=(0, 25))
-columns.pack(side=tk.LEFT)
-columns_input.pack(side=tk.LEFT)
-generate.pack(side=tk.LEFT, padx=(37, 0))
+
+tk.Grid.rowconfigure(generate_frame, 0, weight=1)
+for i in range(5):
+    tk.Grid.columnconfigure(generate_frame, i, weight=1)
+rows.grid(row=0, column=0, sticky='e')
+rows_input.grid(row=0, column=1, sticky='e')
+columns.grid(row=0, column=2, sticky='e')
+columns_input.grid(row=0, column=3, sticky='e')
+generate.grid(row=0, column=4, sticky='e')
+# rows.pack(side=tk.LEFT, padx=(12, 0))
+# rows_input.pack(side=tk.LEFT, padx=(0, 25))
+# columns.pack(side=tk.LEFT)
+# columns_input.pack(side=tk.LEFT)
+# generate.pack(side=tk.LEFT, padx=(37, 0))
 
 
 """Creates a tkinter Frame widget which contains the LifeGUI's grid."""
@@ -190,22 +200,33 @@ run = tk.Button(bottom_frame, text="Run", bg="#D3D3D3", highlightthickness=0, hi
 
 generation = tk.Label(bottom_frame, text="Generation " + str(model.generation), bg="#D3D3D3")
 
-clear.grid(row=0, column=3, padx=(5, 10))
-next_generation.grid(row=0, column=2, padx=(25, 5))
-run.grid(row=0, column=4)
+tk.Grid.rowconfigure(bottom_frame, 0, weight=1)
+tk.Grid.rowconfigure(bottom_frame, 1, weight=1)
+for i in range(5):
+    tk.Grid.columnconfigure(bottom_frame, i, weight=1)
 
-generation.grid(row=0, column=1, padx=(110, 25))
+clear.grid(row=0, column=3, padx=(5, 10), sticky='ew')
+next_generation.grid(row=0, column=2, padx=(25, 5), sticky='ew')
+run.grid(row=0, column=4, sticky='ew')
+
+generation.grid(row=0, column=1, padx=(110, 25), sticky='ew')
 
 scale_frame = tk.Frame(bottom_frame, bg="#D3D3D3")
 cell_size = tk.Scale(scale_frame, from_=0, to_=100, orient=tk.HORIZONTAL, bg="#D3D3D3", command=change_size)
 cell_size.set(50)
 cell_size_label = tk.Label(scale_frame, text="Cell Size", bg="#D3D3D3")
-cell_size.grid(row=0, column=0, padx=(25, 0))
+cell_size.grid(row=0, column=0, padx=(25, 0), sticky='ew')
 cell_size_label.grid(row=1, column=0, padx=(25, 0))
-scale_frame.grid(row=0, column=0, padx=10)
+scale_frame.grid(row=0, column=0, padx=10, sticky='ew')
 
-generate_frame.pack(fill=tk.BOTH, expand=True)
-grid_frame.pack()
-bottom_frame.pack(fill=tk.BOTH, expand=True)
+tk.Grid.columnconfigure(root, 0, weight=1)
+for i in range(3):
+    tk.Grid.rowconfigure(root, i, weight=1)
+generate_frame.grid(row=0, column=0, sticky='nsew')
+grid_frame.grid(row=1, column=0, sticky='nsew')
+bottom_frame.grid(row=2, column=0, sticky='nsew')
+# generate_frame.pack(fill=tk.BOTH, expand=True)
+# grid_frame.pack()
+# bottom_frame.pack(fill=tk.BOTH, expand=True)
 
 root.mainloop()
