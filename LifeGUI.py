@@ -54,7 +54,7 @@ def generate_view():
         num_of_cols = int(columns_input.get())
 
         if num_of_rows <= 0 or num_of_cols <= 0:
-            popup_window(2)
+            popup_window(4)
         else:
             new_grid = list()
             for row in range(num_of_rows):
@@ -66,7 +66,12 @@ def generate_view():
             generation.configure(text="Generation " + str(model.generation))
             view.reset_cells()
     except ValueError:
-        popup_window(1)
+        if rows_input.get().strip() == "":
+            popup_window(1)
+        elif columns_input.get().strip() == "":
+            popup_window(2)
+        else:
+            popup_window(3)
 
 
 def popup_window(error_num):
@@ -78,6 +83,10 @@ def popup_window(error_num):
     ok_frame = tk.Frame(pw, bg="#D3D3D3")
 
     if error_num == 1:
+        error = tk.Label(error_frame, text="Invalid Input: Enter number of rows")
+    elif error_num == 2:
+        error = tk.Label(error_frame, text="Invalid Input: Enter number of columns")
+    elif error_num == 3:
         error = tk.Label(error_frame, text="Invalid Input: Enter a valid number")
     else:
         error = tk.Label(error_frame, text="Invalid Input: Enter a number greater than or equal to 1")
@@ -177,7 +186,7 @@ def loop():
     """Recursively loops next_gen"""
     if run.config('text')[-1] == 'Stop':
         next_gen()
-        root.after(500, loop)
+        root.after(400, loop)
 
 
 def run_generations():
